@@ -48,6 +48,34 @@ st.set_page_config(
 )
 st.markdown("""
 <style>
+    /* Ocultar barra superior, menú y pie de página de Streamlit */
+    header {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stDeployButton {display: none;}
+    
+    /* Ocultar completamente el botón flotante de Manage app */
+    div[data-testid="stToolbar"] {visibility: hidden; display: none !important;}
+    div[data-testid="stDecoration"] {visibility: hidden;}
+    
+    /* Forzar que los textos y etiquetas tengan un color oscuro y legible en modo claro */
+    .stMarkdown p, span, label, .streamlit-expanderHeader {
+        color: #1f2937 !important;
+    }
+    
+    /* Asegurar visibilidad en subtítulos y textos de archivo */
+    small, span[data-testid="stCaptionContainer"] {
+        color: #4b5563 !important;
+    }
+
+    /* Reducir el espacio superior */
+    .block-container {
+        padding-top: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+st.markdown("""
+<style>
     /* Oculta la barra superior predeterminada de Streamlit */
     header {visibility: hidden;}
     
