@@ -1,0 +1,44 @@
+{
+  "Regresión logística": {
+    "accuracy": 0.9344262295081968,
+    "precision_ponderada": 0.9334128166915052,
+    "sensibilidad_ponderada": 0.9344262295081968,
+    "f1_ponderado": 0.9323631091780975,
+    "etiquetas": [
+      "1",
+      "2"
+    ],
+    "matriz_confusion": [
+      [
+        47,
+        1
+      ],
+      [
+        3,
+        10
+      ]
+    ],
+    "reporte": "              precision    recall  f1-score   support\n\n           1       0.94      0.98      0.96        48\n           2       0.91      0.77      0.83        13\n\n    accuracy                           0.93        61\n   macro avg       0.92      0.87      0.90        61\nweighted avg       0.93      0.93      0.93        61\n"
+  },
+  "Red neuronal artificial": {
+    "accuracy": 0.9016393442622951,
+    "precision_ponderada": 0.9016393442622951,
+    "sensibilidad_ponderada": 0.9016393442622951,
+    "f1_ponderado": 0.9016393442622951,
+    "etiquetas": [
+      "1",
+      "2"
+    ],
+    "matriz_confusion": [
+      [
+        45,
+        3
+      ],
+      [
+        3,
+        10
+      ]
+    ],
+    "reporte": "              precision    recall  f1-score   support\n\n           1       0.94      0.94      0.94        48\n           2       0.77      0.77      0.77        13\n\n    accuracy                           0.90        61\n   macro avg       0.85      0.85      0.85        61\nweighted avg       0.90      0.90      0.90        61\n"
+  }
+}
