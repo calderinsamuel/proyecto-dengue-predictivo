@@ -64,128 +64,31 @@ st.markdown("""
 
 st.markdown("""
 <style>
-  
+   
+/* Ocultar menú principal */
+#MainMenu {
+    display: none !important;
+}
 
-    /* Fondo y colores adaptables al tema de Streamlit */
-    .stApp {
-        background: var(--background-color);
-        color: var(--text-color);
-    }
+/* Ocultar barra superior */
+header {
+    display: none !important;
+}
 
-    .main .block-container {
-        max-width: 1240px;
-        padding-top: 1.6rem;
-        padding-bottom: 3rem;
-    }
+/* Ocultar herramientas de Streamlit */
+[data-testid="stToolbar"] {
+    display: none !important;
+}
 
-    /* Textos generales */
-    .stApp p,
-    .stApp label,
-    .stApp span,
-    .stApp li,
-    .stApp small,
-    .stMarkdown,
-    .stMarkdown p,
-    .stMarkdown li,
-    .stCaption {
-        color: var(--text-color);
-    }
+/* Ocultar decoración superior */
+[data-testid="stDecoration"] {
+    display: none !important;
+}
 
-    /* Títulos */
-    .stApp h1:not(.hero h1),
-    .stApp h2,
-    .stApp h3,
-    .stApp h4 {
-        color: var(--text-color);
-    }
-
-    /* Encabezado principal */
-    .hero {
-        padding: 1.5rem 1.7rem;
-        border-radius: 20px;
-        background: linear-gradient(115deg, #102a43, #176b87);
-        color: #ffffff;
-        margin-bottom: 1rem;
-    }
-
-    .hero h1 {
-        color: #ffffff !important;
-        font-size: 2.1rem;
-        margin: 0 0 .35rem 0;
-    }
-
-    .hero p {
-        color: #e2f2f7 !important;
-        margin: 0;
-        font-size: 1.02rem;
-    }
-
-    /* Tarjetas */
-    .mini-card {
-        border: 1px solid var(--secondary-background-color);
-        border-radius: 15px;
-        padding: 1rem 1.1rem;
-        background: var(--secondary-background-color);
-        min-height: 100px;
-    }
-
-    .mini-card h3,
-    .mini-card p {
-        color: var(--text-color);
-    }
-
-    /* Métricas */
-    div[data-testid="stMetric"] {
-        background: var(--secondary-background-color);
-        border: 1px solid var(--secondary-background-color);
-        border-radius: 12px;
-        padding: 12px 15px;
-    }
-
-    div[data-testid="stMetric"] label,
-    div[data-testid="stMetric"] [data-testid="stMetricValue"],
-    div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
-        color: var(--text-color) !important;
-    }
-
-    /* Pestañas */
-    button[data-baseweb="tab"] {
-        color: var(--text-color) !important;
-    }
-
-    button[data-baseweb="tab"] p {
-        color: var(--text-color) !important;
-    }
-
-    /* Campos de entrada */
-    .stTextInput input,
-    .stNumberInput input,
-    .stSelectbox div[data-baseweb="select"] {
-        color: var(--text-color) !important;
-        background-color: var(--secondary-background-color);
-    }
-
-    /* Barra lateral */
-    section[data-testid="stSidebar"] {
-        background: var(--secondary-background-color);
-    }
-
-    section[data-testid="stSidebar"] * {
-        color: var(--text-color);
-    }
-
-    /* Tablas */
-    .stDataFrame {
-        color: var(--text-color);
-    }
-
-    /* Textos secundarios */
-    .subtle {
-        color: var(--text-color);
-        opacity: 0.8;
-        font-size: .92rem;
-    }
-
+/* Ocultar pie de página */
+footer {
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
