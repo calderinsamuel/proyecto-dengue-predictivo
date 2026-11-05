@@ -46,34 +46,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-st.markdown("""
-<style>
-    /* Ocultar barra superior, menú y pie de página de Streamlit */
-    header {visibility: hidden;}
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    .stDeployButton {display: none;}
-    
-    /* Ocultar completamente el botón flotante de Manage app */
-    div[data-testid="stToolbar"] {visibility: hidden; display: none !important;}
-    div[data-testid="stDecoration"] {visibility: hidden;}
-    
-    /* Forzar que los textos y etiquetas tengan un color oscuro y legible en modo claro */
-    .stMarkdown p, span, label, .streamlit-expanderHeader {
-        color: #1f2937 !important;
-    }
-    
-    /* Asegurar visibilidad en subtítulos y textos de archivo */
-    small, span[data-testid="stCaptionContainer"] {
-        color: #4b5563 !important;
-    }
 
-    /* Reducir el espacio superior */
-    .block-container {
-        padding-top: 1rem;
-    }
-</style>
-""", unsafe_allow_html=True)
 st.markdown("""
 <style>
     /* Oculta la barra superior predeterminada de Streamlit */
@@ -91,16 +64,129 @@ st.markdown("""
 
 st.markdown("""
 <style>
-    .stApp { background: linear-gradient(180deg, #f7f9fc 0%, #ffffff 38%); }
-    .main .block-container { max-width: 1240px; padding-top: 1.6rem; padding-bottom: 3rem; }
-    .hero { padding: 1.5rem 1.7rem; border-radius: 20px; background: linear-gradient(115deg, #102a43, #176b87); color: white; margin-bottom: 1rem; }
-    .hero h1 { color: white; font-size: 2.1rem; margin: 0 0 .35rem 0; }
-    .hero p { color: #e2f2f7; margin: 0; font-size: 1.02rem; }
-    .mini-card { border: 1px solid #e1e8f0; border-radius: 15px; padding: 1rem 1.1rem; background: white; min-height: 100px; }
-    .mini-card h3 { font-size: 1.05rem; margin: 0 0 .35rem; color: #17324d; }
-    .mini-card p { font-size: .93rem; color: #516579; margin: 0; }
-    div[data-testid="stMetric"] { background: white; border: 1px solid #e1e8f0; border-radius: 12px; padding: 12px 15px; }
-    .subtle { color: #526579; font-size: .92rem; }
+  
+<style>
+    /* Fondo y colores adaptables al tema de Streamlit */
+    .stApp {
+        background: var(--background-color);
+        color: var(--text-color);
+    }
+
+    .main .block-container {
+        max-width: 1240px;
+        padding-top: 1.6rem;
+        padding-bottom: 3rem;
+    }
+
+    /* Textos generales */
+    .stApp p,
+    .stApp label,
+    .stApp span,
+    .stApp li,
+    .stApp small,
+    .stMarkdown,
+    .stMarkdown p,
+    .stMarkdown li,
+    .stCaption {
+        color: var(--text-color);
+    }
+
+    /* Títulos */
+    .stApp h1:not(.hero h1),
+    .stApp h2,
+    .stApp h3,
+    .stApp h4 {
+        color: var(--text-color);
+    }
+
+    /* Encabezado principal */
+    .hero {
+        padding: 1.5rem 1.7rem;
+        border-radius: 20px;
+        background: linear-gradient(115deg, #102a43, #176b87);
+        color: #ffffff;
+        margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+        color: #ffffff !important;
+        font-size: 2.1rem;
+        margin: 0 0 .35rem 0;
+    }
+
+    .hero p {
+        color: #e2f2f7 !important;
+        margin: 0;
+        font-size: 1.02rem;
+    }
+
+    /* Tarjetas */
+    .mini-card {
+        border: 1px solid var(--secondary-background-color);
+        border-radius: 15px;
+        padding: 1rem 1.1rem;
+        background: var(--secondary-background-color);
+        min-height: 100px;
+    }
+
+    .mini-card h3,
+    .mini-card p {
+        color: var(--text-color);
+    }
+
+    /* Métricas */
+    div[data-testid="stMetric"] {
+        background: var(--secondary-background-color);
+        border: 1px solid var(--secondary-background-color);
+        border-radius: 12px;
+        padding: 12px 15px;
+    }
+
+    div[data-testid="stMetric"] label,
+    div[data-testid="stMetric"] [data-testid="stMetricValue"],
+    div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
+        color: var(--text-color) !important;
+    }
+
+    /* Pestañas */
+    button[data-baseweb="tab"] {
+        color: var(--text-color) !important;
+    }
+
+    button[data-baseweb="tab"] p {
+        color: var(--text-color) !important;
+    }
+
+    /* Campos de entrada */
+    .stTextInput input,
+    .stNumberInput input,
+    .stSelectbox div[data-baseweb="select"] {
+        color: var(--text-color) !important;
+        background-color: var(--secondary-background-color);
+    }
+
+    /* Barra lateral */
+    section[data-testid="stSidebar"] {
+        background: var(--secondary-background-color);
+    }
+
+    section[data-testid="stSidebar"] * {
+        color: var(--text-color);
+    }
+
+    /* Tablas */
+    .stDataFrame {
+        color: var(--text-color);
+    }
+
+    /* Textos secundarios */
+    .subtle {
+        color: var(--text-color);
+        opacity: 0.8;
+        font-size: .92rem;
+    }
+</style>
+
 </style>
 """, unsafe_allow_html=True)
 
