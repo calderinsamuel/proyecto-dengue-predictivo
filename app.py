@@ -74,21 +74,6 @@ header[data-testid="stHeader"] {
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<style>
-    /* Oculta la barra superior predeterminada de Streamlit */
-    header {visibility: hidden;}
-    
-    /* Oculta el botón flotante de Manage app en la esquina inferior */
-    div[data-testid="stToolbar"] {visibility: hidden; display: none;}
-    
-    /* Ajusta el espacio superior que deja la barra oculta */
-    .block-container {
-        padding-top: 1rem;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
 
 <style>
     /* Fondo y colores adaptables al tema de Streamlit */
