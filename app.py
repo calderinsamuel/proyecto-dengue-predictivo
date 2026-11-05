@@ -49,6 +49,32 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+
+/* Ocultar únicamente el menú principal */
+#MainMenu {
+    display: none !important;
+}
+
+/* Ocultar la decoración superior */
+[data-testid="stDecoration"] {
+    display: none !important;
+}
+
+/* Ocultar el pie de página */
+footer {
+    display: none !important;
+}
+
+/* Mantener visible la cabecera y sus botones */
+header[data-testid="stHeader"] {
+    display: block !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
     /* Oculta la barra superior predeterminada de Streamlit */
     header {visibility: hidden;}
     
