@@ -65,7 +65,7 @@ st.markdown("""
 st.markdown("""
 <style>
   
-<style>
+
     /* Fondo y colores adaptables al tema de Streamlit */
     .stApp {
         background: var(--background-color);
@@ -185,7 +185,6 @@ st.markdown("""
         opacity: 0.8;
         font-size: .92rem;
     }
-</style>
 
 </style>
 """, unsafe_allow_html=True)
