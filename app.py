@@ -13,6 +13,9 @@ import streamlit as st
 from modeling import (
     clean_dataset,
     train_models,
+    evaluate_predictions,
+    normalize_label,
+    prepare_dengue_prediction_data,
 )
 
 APP_DIR = Path(__file__).parent
@@ -286,10 +289,11 @@ if "trained_bundle" not in st.session_state and NOTEBOOK_MODEL_PATH.exists():
         st.warning(f"No se pudieron cargar los modelos guardados desde el cuaderno: {exc}")
 
 # Three functional views.
-tab_data, tab_train, tab_individual = st.tabs([
+tab_data, tab_train, tab_individual, tab_batch = st.tabs([
     "Base y limpieza",
     "Entrenar y comparar",
-    "Predicción individual"
+    "Predicción individual",
+    "Predicción por lote"
 ])
 
 with tab_data:
@@ -445,4 +449,222 @@ with tab_individual:
                     st.metric("Clase predicha", prediction)
                     st.dataframe(probabilities, use_container_width=True, hide_index=True)
 
+with tab_batch:
+    st.subheader("Predicción por lote")
 
+    if not valid_bundle:
+        st.info(
+            "Primero entrena los modelos en la pestaña "
+            "**Entrenar y comparar**."
+        )
+
+    else:
+        st.write(
+            "Carga un archivo CSV o Excel con varios registros. "
+            "La aplicación realizará las predicciones utilizando "
+            "la regresión logística y la red neuronal artificial."
+        )
+
+        st.info(
+            "El archivo debe contener las mismas columnas "
+            "predictoras utilizadas durante el entrenamiento."
+        )
+
+        batch_file = st.file_uploader(
+            "Selecciona el archivo para predicción por lote",
+            type=["csv", "xlsx"],
+            key="batch_upload"
+        )
+
+        if batch_file is not None:
+
+            try:
+                # Leer y preparar el archivo
+                batch_df = standardize_dataset_headers(
+                    read_uploaded_file(batch_file)
+                )
+
+                batch_df = prepare_dengue_prediction_data(
+                    batch_df
+                )
+
+                # Comprobar que estén las variables necesarias
+                missing = [
+                    column
+                    for column in bundle["features"]
+                    if column not in batch_df.columns
+                ]
+
+                if missing:
+                    st.error(
+                        "Al archivo le faltan estas columnas: "
+                        + ", ".join(missing)
+                    )
+
+                elif batch_df.empty:
+                    st.warning(
+                        "El archivo no contiene registros."
+                    )
+
+                else:
+                    # Seleccionar las variables utilizadas
+                    batch_x = batch_df[
+                        bundle["features"]
+                    ].copy()
+
+                    # Adaptar los tipos de datos
+                    for feature in bundle["features"]:
+
+                        reference = bundle["reference_df"][feature]
+
+                        if (
+                            pd.api.types.is_numeric_dtype(reference)
+                            and not pd.api.types.is_bool_dtype(reference)
+                        ):
+                            batch_x[feature] = pd.to_numeric(
+                                batch_x[feature],
+                                errors="coerce"
+                            )
+                        else:
+                            batch_x[feature] = batch_x[
+                                feature
+                            ].map(
+                                lambda value:
+                                np.nan if pd.isna(value)
+                                else str(value).strip()
+                            )
+
+                    # Conservar los datos originales
+                    results_df = batch_df.copy()
+
+                    batch_predictions = {}
+
+                    # Ejecutar los dos modelos
+                    for model_name, model in bundle["models"].items():
+
+                        short_name = (
+                            "logistica"
+                            if model_name == "Regresión logística"
+                            else "red_neuronal"
+                        )
+
+                        predictions = model.predict(
+                            batch_x
+                        ).astype(str)
+
+                        batch_predictions[model_name] = predictions
+
+                        probabilities = model.predict_proba(
+                            batch_x
+                        )
+
+                        best_probs = probabilities.max(axis=1)
+
+                        # Agregar resultados al archivo
+                        results_df[
+                            f"prediccion_{short_name}"
+                        ] = [
+                            display_class_label(value, target)
+                            for value in predictions
+                        ]
+
+                        results_df[
+                            f"probabilidad_{short_name}_pct"
+                        ] = np.round(best_probs * 100, 2)
+
+                    # Mostrar resultados
+                    st.success(
+                        f"Se generaron predicciones para "
+                        f"{len(results_df):,} registros."
+                    )
+
+                    st.subheader("Resultados de las predicciones")
+
+                    st.dataframe(
+                        results_df.head(100),
+                        use_container_width=True,
+                        hide_index=True
+                    )
+
+                    # Descargar resultados
+                    out_csv = results_df.to_csv(
+                        index=False
+                    ).encode("utf-8-sig")
+
+                    st.download_button(
+                        "Descargar predicciones completas (CSV)",
+                        data=out_csv,
+                        file_name="predicciones_por_lote.csv",
+                        mime="text/csv"
+                    )
+
+                    # Evaluación adicional si el archivo
+                    # contiene las etiquetas reales
+                    if target in batch_df.columns:
+
+                        st.markdown(
+                            "### Evaluación del lote"
+                        )
+
+                        valid_rows = batch_df[target].notna()
+
+                        if valid_rows.sum() >= 1:
+
+                            y_true = (
+                                batch_df.loc[
+                                    valid_rows, target
+                                ]
+                                .map(normalize_label)
+                                .to_numpy()
+                            )
+
+                            eval_cols = st.columns(2)
+
+                            for col, model_name in zip(
+                                eval_cols,
+                                bundle["models"].keys()
+                            ):
+                                with col:
+
+                                    short_name = (
+                                        "logistica"
+                                        if model_name == "Regresión logística"
+                                        else "red_neuronal"
+                                    )
+
+                                    y_hat = batch_predictions[
+                                        model_name
+                                    ][valid_rows.to_numpy()]
+
+                                    metrics = evaluate_predictions(
+                                        y_true,
+                                        y_hat
+                                    )
+
+                                    st.markdown(
+                                        f"#### {model_name}"
+                                    )
+
+                                    show_metrics(metrics)
+
+                                    st.dataframe(
+                                        matrix_dataframe(
+                                            metrics,
+                                            target
+                                        ),
+                                        use_container_width=True
+                                    )
+
+                        else:
+                            st.warning(
+                                "La columna objetivo existe, "
+                                "pero sus filas están vacías. "
+                                "No se pueden calcular métricas."
+                            )
+
+            except Exception as exc:
+                st.error(
+                    f"No se pudo procesar el archivo: {exc}"
+                )
+                    
+        
